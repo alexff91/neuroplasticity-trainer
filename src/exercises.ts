@@ -1,0 +1,192 @@
+import type { ExerciseConfig, Achievement, UserProfile } from './types';
+
+export const EXERCISES: ExerciseConfig[] = [
+  {
+    id: 'pattern-matrix',
+    name: 'Pattern Matrix',
+    skill: 'pattern-recognition',
+    description: 'Identify the missing piece in a visual pattern sequence. Engages the lateral occipital cortex and prefrontal reasoning circuits.',
+    scienceNote: 'Pattern recognition activates the dorsolateral prefrontal cortex (DLPFC) and strengthens long-range neural connections between visual and executive areas. Studies show fluid intelligence improves with matrix reasoning training.',
+    scienceRef: 'Jaeggi et al. (2008). Improving fluid intelligence with training on working memory. PNAS, 105(19), 6829-6833.',
+    icon: 'grid-3x3',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'sequence-recall',
+    name: 'Sequence Recall',
+    skill: 'working-memory',
+    description: 'Memorize and reproduce increasingly long sequences. Directly trains the phonological loop and visuospatial sketchpad.',
+    scienceNote: 'Working memory training increases activity in the frontoparietal network. The capacity of working memory (typically 7 +/- 2 items) can be expanded through deliberate practice, a finding replicated across dozens of studies.',
+    scienceRef: 'Klingberg, T. (2010). Training and plasticity of working memory. Trends in Cognitive Sciences, 14(7), 317-324.',
+    icon: 'list-ordered',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'n-back',
+    name: 'N-Back Challenge',
+    skill: 'working-memory',
+    description: 'Track whether the current item matches the one N steps back. The gold standard of working memory training.',
+    scienceNote: 'N-back training is the most-studied working memory intervention. fMRI studies show it produces measurable changes in prefrontal and parietal cortex activation after just 2-4 weeks of training.',
+    scienceRef: 'Soveri, A., et al. (2017). Working memory training revisited: A multi-level meta-analysis. Psychonomic Bulletin & Review, 24(4), 1077-1096.',
+    icon: 'brain',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'speed-match',
+    name: 'Speed Match',
+    skill: 'reaction-time',
+    description: 'Rapidly determine if two items match. Trains processing speed and the anterior cingulate cortex.',
+    scienceNote: 'Processing speed is governed by myelination — the insulation of neural axons. Training tasks that demand speed can promote myelination in relevant circuits, a process that continues throughout adulthood.',
+    scienceRef: 'Ball, K., et al. (2002). Effects of cognitive training interventions with older adults: ACTIVE RCT. JAMA, 288(18), 2271-2281.',
+    icon: 'zap',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'go-no-go',
+    name: 'Go / No-Go',
+    skill: 'attention-control',
+    description: 'Respond to target stimuli while inhibiting responses to distractors. Trains inhibitory control circuits.',
+    scienceNote: 'Inhibitory control is mediated by the right inferior frontal gyrus and the subthalamic nucleus. Strengthening this circuit improves self-regulation and reduces impulsive errors across cognitive domains.',
+    scienceRef: 'Aron, A.R., et al. (2004). Inhibition and the right inferior frontal cortex. Trends in Cognitive Sciences, 8(4), 170-177.',
+    icon: 'target',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'mental-rotation',
+    name: 'Mental Rotation',
+    skill: 'spatial-reasoning',
+    description: 'Determine if rotated shapes are identical or mirrored. Engages the parietal cortex and spatial processing networks.',
+    scienceNote: 'Spatial reasoning relies on the posterior parietal cortex. Shepard & Metzler (1971) showed response time increases linearly with rotation angle, confirming we literally rotate mental images. Training produces transfer effects to STEM tasks.',
+    scienceRef: 'Uttal, D.H., et al. (2013). The malleability of spatial skills: A meta-analysis of training studies. Psychological Bulletin, 139(2), 352.',
+    icon: 'rotate-3d',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'word-chain',
+    name: 'Word Chain',
+    skill: 'verbal-fluency',
+    description: 'Generate words meeting specific criteria under time pressure. Activates Broca\'s area and the left temporal lobe.',
+    scienceNote: 'Verbal fluency tasks activate the left inferior frontal gyrus (Broca\'s area), anterior cingulate, and temporal cortex. They are sensitive markers of executive function and are used clinically to detect cognitive decline.',
+    scienceRef: 'Henry, J.D. & Crawford, J.R. (2004). A meta-analytic review of verbal fluency performance following focal cortical lesions. Neuropsychology, 18(2), 284.',
+    icon: 'type',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+  {
+    id: 'stroop-test',
+    name: 'Stroop Challenge',
+    skill: 'attention-control',
+    description: 'Name the color of text while ignoring the written word. A classic test of cognitive interference and selective attention.',
+    scienceNote: 'The Stroop effect demonstrates automatic vs. controlled processing. Resolving the conflict between reading and color naming strengthens the anterior cingulate cortex, a key hub for conflict monitoring and cognitive control.',
+    scienceRef: 'MacLeod, C.M. (1991). Half a century of research on the Stroop effect: An integrative review. Psychological Bulletin, 109(2), 163.',
+    icon: 'palette',
+    minDifficulty: 1,
+    maxDifficulty: 10,
+  },
+];
+
+export const SKILL_LABELS: Record<string, string> = {
+  'pattern-recognition': 'Pattern Recognition',
+  'working-memory': 'Working Memory',
+  'reaction-time': 'Processing Speed',
+  'spatial-reasoning': 'Spatial Reasoning',
+  'verbal-fluency': 'Verbal Fluency',
+  'attention-control': 'Attention Control',
+};
+
+export const SKILL_COLORS: Record<string, string> = {
+  'pattern-recognition': '#818cf8',
+  'working-memory': '#c084fc',
+  'reaction-time': '#fbbf24',
+  'spatial-reasoning': '#34d399',
+  'verbal-fluency': '#38bdf8',
+  'attention-control': '#f87171',
+};
+
+export const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: 'first-session',
+    name: 'First Steps',
+    description: 'Complete your first training session',
+    icon: 'trophy',
+    condition: (p: UserProfile) => p.totalSessions >= 1,
+  },
+  {
+    id: 'streak-3',
+    name: 'Consistent',
+    description: 'Maintain a 3-day training streak',
+    icon: 'flame',
+    condition: (p: UserProfile) => p.currentStreak >= 3 || p.longestStreak >= 3,
+  },
+  {
+    id: 'streak-7',
+    name: 'Dedicated',
+    description: 'Maintain a 7-day training streak',
+    icon: 'flame',
+    condition: (p: UserProfile) => p.currentStreak >= 7 || p.longestStreak >= 7,
+  },
+  {
+    id: 'streak-30',
+    name: 'Iron Will',
+    description: 'Maintain a 30-day training streak',
+    icon: 'flame',
+    condition: (p: UserProfile) => p.currentStreak >= 30 || p.longestStreak >= 30,
+  },
+  {
+    id: 'exercises-50',
+    name: 'Half Century',
+    description: 'Complete 50 exercises total',
+    icon: 'award',
+    condition: (p: UserProfile) => p.totalExercises >= 50,
+  },
+  {
+    id: 'exercises-200',
+    name: 'Brain Athlete',
+    description: 'Complete 200 exercises total',
+    icon: 'award',
+    condition: (p: UserProfile) => p.totalExercises >= 200,
+  },
+  {
+    id: 'perfect-score',
+    name: 'Perfect Mind',
+    description: 'Score 100% on any exercise',
+    icon: 'star',
+    condition: (p: UserProfile) => p.results.some(r => r.score === 100),
+  },
+  {
+    id: 'all-skills',
+    name: 'Well-Rounded',
+    description: 'Train all 6 cognitive skill areas',
+    icon: 'hexagon',
+    condition: (p: UserProfile) => {
+      const skills = new Set(p.results.map(r => r.skill));
+      return skills.size >= 6;
+    },
+  },
+  {
+    id: 'speed-demon',
+    name: 'Speed Demon',
+    description: 'Average response time under 500ms in Speed Match',
+    icon: 'zap',
+    condition: (p: UserProfile) => {
+      const speedResults = p.results.filter(r => r.exerciseId === 'speed-match');
+      if (speedResults.length < 5) return false;
+      const last5 = speedResults.slice(-5);
+      const avg = last5.reduce((s, r) => s + r.responseTimeMs, 0) / last5.length;
+      return avg < 500;
+    },
+  },
+  {
+    id: 'sessions-10',
+    name: 'Building Habits',
+    description: 'Complete 10 training sessions',
+    icon: 'calendar',
+    condition: (p: UserProfile) => p.totalSessions >= 10,
+  },
+];
