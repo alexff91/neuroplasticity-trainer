@@ -1,0 +1,21 @@
+{
+  "name": "NeuroForge - Adaptive Brain Training",
+  "short_name": "NeuroForge",
+  "description": "Science-backed cognitive training leveraging neuroplasticity research",
+  "start_url": "/neuroplasticity-trainer/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

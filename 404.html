@@ -1,20 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Neuroplasticity Trainer</title>
-  <script>
-    // GitHub Pages SPA redirect: convert path to query string so index.html can restore it
-    var pathSegmentsToKeep = 1;
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
-  </script>
-</head>
-<body></body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/neuroplasticity-trainer/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Science-backed cognitive training platform leveraging neuroplasticity research with spaced repetition, interleaving, and personalized difficulty curves." />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="manifest" href="/neuroplasticity-trainer/manifest.json" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <title>NeuroForge - Adaptive Brain Training</title>
+    <script type="module" crossorigin src="/neuroplasticity-trainer/assets/index-D8e5jfsA.js"></script>
+    <link rel="stylesheet" crossorigin href="/neuroplasticity-trainer/assets/index-BOEX6gwz.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
