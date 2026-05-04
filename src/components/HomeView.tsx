@@ -2,6 +2,7 @@ import { Brain, Clock, Trophy, TrendingUp, ChevronRight, Sparkles } from 'lucide
 import type { UserProfile, CognitiveSkill } from '../types';
 import { EXERCISES, SKILL_LABELS, SKILL_COLORS, ACHIEVEMENTS } from '../exercises';
 import { getTodayString } from '../storage';
+import { computeBrainScore } from '../global';
 
 interface Props {
   profile: UserProfile;
@@ -35,6 +36,8 @@ export default function HomeView({ profile, onStartSession, onStartExercise }: P
     ? skillEntries.sort((a, b) => a[1] - b[1])[0]
     : null;
 
+  const brainScore = computeBrainScore(profile);
+
   return (
     <div className="animate-fade-in" style={{ maxWidth: '800px', margin: '0 auto', padding: '1.5rem 1rem' }}>
       {/* Welcome Section */}
@@ -57,6 +60,67 @@ export default function HomeView({ profile, onStartSession, onStartExercise }: P
           Build neural pathways through deliberate practice.
         </p>
       </div>
+
+      {/* Brain Score Hero */}
+      {brainScore > 0 && (
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(129,140,248,0.12), rgba(192,132,252,0.12))',
+          border: '1px solid rgba(129,140,248,0.25)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '1.25rem',
+          marginBottom: '1.25rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}>
+          <div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.15rem' }}>
+              Brain Score
+            </div>
+            <div style={{
+              fontSize: '2.75rem',
+              fontWeight: 800,
+              lineHeight: 1,
+              background: 'var(--gradient-primary)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>
+              {brainScore}
+            </div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
+              Composite of your last 10 results across all skills
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', maxWidth: '280px', justifyContent: 'flex-end' }}>
+            {skills.map(skill => {
+              const v = skillAverages[skill];
+              if (v === undefined) return null;
+              return (
+                <div key={skill} title={`${SKILL_LABELS[skill]}: ${v}`} style={{
+                  width: '28px',
+                  height: '40px',
+                  borderRadius: '4px',
+                  background: 'var(--bg-primary)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: `${v}%`,
+                    background: SKILL_COLORS[skill],
+                    transition: 'height 0.6s',
+                  }} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Quick Stats */}
       <div style={{

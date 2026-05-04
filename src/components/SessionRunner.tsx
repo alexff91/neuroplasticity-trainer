@@ -3,7 +3,7 @@ import { ArrowLeft, Check, X } from 'lucide-react';
 import type { ExerciseResult, UserProfile } from '../types';
 import { EXERCISES, SKILL_LABELS, SKILL_COLORS } from '../exercises';
 import { getOrCreateDifficultyState } from '../difficulty';
-import { PatternMatrix, SequenceRecall, NBack, SpeedMatch, GoNoGo, MentalRotation, WordChain, StroopTest } from '../games';
+import { PatternMatrix, SequenceRecall, NBack, SpeedMatch, GoNoGo, MentalRotation, WordChain, StroopTest, MathSprint, ReactionTap, SchulteTable, Anagram } from '../games';
 
 interface Props {
   exerciseIds: string[];
@@ -70,6 +70,10 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
       case 'mental-rotation': return <MentalRotation {...p} />;
       case 'word-chain': return <WordChain {...p} />;
       case 'stroop-test': return <StroopTest {...p} />;
+      case 'math-sprint': return <MathSprint {...p} />;
+      case 'reaction-tap': return <ReactionTap {...p} />;
+      case 'schulte-table': return <SchulteTable {...p} />;
+      case 'anagram': return <Anagram {...p} />;
       default: return <div>Unknown exercise</div>;
     }
   };

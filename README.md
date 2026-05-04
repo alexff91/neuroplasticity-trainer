@@ -15,18 +15,22 @@ Most "brain training" apps are gamified toys with no scientific foundation. Neur
 - **Interleaved practice** mixes exercise types within sessions (proven superior to blocked practice)
 - **Full scientific transparency** with citations for every claim and a dedicated Science page
 
-## Cognitive Exercises (8 exercises across 6 domains)
+## Cognitive Exercises (12 exercises across 6 domains)
 
 | Exercise | Cognitive Domain | Brain Regions | Key Reference |
 |----------|-----------------|---------------|---------------|
 | **Pattern Matrix** | Pattern Recognition | DLPFC, lateral occipital cortex | Jaeggi et al. (2008), PNAS |
 | **Sequence Recall** | Working Memory | Frontoparietal network | Klingberg (2010), Trends in Cog. Sci. |
 | **N-Back Challenge** | Working Memory | Prefrontal & parietal cortex | Soveri et al. (2017), Psychonomic Bull. |
+| **Math Sprint** | Working Memory | Intraparietal sulcus, PFC | Dehaene et al. (2003), Cog. Neuropsych. |
 | **Speed Match** | Processing Speed | Myelination circuits | Ball et al. (2002), JAMA |
+| **Reaction Tap** | Processing Speed | Cortico-spinal pathways | Deary et al. (2010), Behavior Genetics |
 | **Go/No-Go** | Attention Control | Right inferior frontal gyrus | Aron et al. (2004), Trends in Cog. Sci. |
+| **Stroop Challenge** | Attention Control | Anterior cingulate cortex | MacLeod (1991), Psych. Bulletin |
+| **Schulte Table** | Attention Control | Dorsal attention network | Posner & Petersen (1990), Annu. Rev. Neurosci. |
 | **Mental Rotation** | Spatial Reasoning | Posterior parietal cortex | Uttal et al. (2013), Psych. Bulletin |
 | **Word Chain** | Verbal Fluency | Broca's area, temporal cortex | Henry & Crawford (2004), Neuropsych. |
-| **Stroop Challenge** | Attention Control | Anterior cingulate cortex | MacLeod (1991), Psych. Bulletin |
+| **Anagram Solver** | Verbal Fluency | Left IFG, anterior temporal | Aziz-Zadeh et al. (2009), Brain Res. |
 
 ## Features
 
@@ -70,6 +74,18 @@ When generating a session, exercises are ranked by:
 - Installable on mobile devices
 - All data stored locally (localStorage)
 
+### Global Mind (Optional, Opt-In)
+A privacy-respecting global benchmark layer:
+
+- **Local-first.** The app works fully offline. Global Mind is opt-in only.
+- **Anonymous handle.** A random handle (e.g. `SwiftSynapse4821`) is generated on first connect — no sign-up, no email, no tracking.
+- **What is sent:** the handle, your timezone region, brain score, and per-skill averages from your last 10 sessions. Nothing else.
+- **What you get:** your *Brain Score* compared against the global average per skill, a top-50 leaderboard, and live community totals (trainees, exercises, sessions).
+- **Backend is open-source.** A 150-line [Cloudflare Worker](server/worker.ts) you can self-host on the free tier. See [`server/README.md`](server/README.md) for the 3-minute deploy.
+- **Profile portability.** Export/import your full profile as JSON from the Dashboard for backup or device transfer.
+
+When no backend is configured, the Global tab shows static seed benchmarks so the UI still demonstrates the feature.
+
 ## Scientific Foundation
 
 ### Core Learning Principles Applied
@@ -105,6 +121,10 @@ npm run dev
 # Production build
 npm run build
 
+# Production build with Global Mind enabled (point to your Worker URL)
+VITE_GLOBAL_API_URL=https://neuroforge-global.<your-subdomain>.workers.dev \
+  npm run build
+
 # Preview production build
 npm run preview
 ```
@@ -117,22 +137,33 @@ src/
   storage.ts         # localStorage persistence layer
   exercises.ts       # Exercise configs, skill labels, achievements
   difficulty.ts      # Adaptive ELO engine, spaced repetition, interleaving
+  global.ts          # Optional opt-in anonymous global sync layer
   games/
     PatternMatrix.tsx    # Visual pattern completion
     SequenceRecall.tsx   # Grid-based sequence memory
     NBack.tsx            # Classic N-back task
+    MathSprint.tsx       # Timed mental arithmetic
     SpeedMatch.tsx       # Shape/color matching speed
+    ReactionTap.tsx      # Simple + go/no-go reaction time
     GoNoGo.tsx           # Inhibitory control task
+    StroopTest.tsx       # Color-word interference
+    SchulteTable.tsx     # Visual search / peripheral attention
     MentalRotation.tsx   # 2D shape rotation/mirror detection
     WordChain.tsx        # Timed word generation
-    StroopTest.tsx       # Color-word interference
+    Anagram.tsx          # Letter unscrambling
   components/
     Header.tsx           # Navigation with streak display
-    HomeView.tsx         # Dashboard, session launcher, exercise catalog
+    HomeView.tsx         # Brain Score hero, session launcher, exercise catalog
     SessionRunner.tsx    # Session flow: intro > play > result > next
-    Dashboard.tsx        # Charts, radar, achievements
+    Dashboard.tsx        # Charts, radar, achievements, profile export/import
+    GlobalView.tsx       # Opt-in global benchmarks & leaderboard
     SciencePage.tsx      # Full science references and principles
   App.tsx              # Root state management and routing
+
+server/                  # Optional self-hostable Cloudflare Worker backend
+  worker.ts              # POST /submit, GET /global — anonymous KV-backed
+  wrangler.toml.example  # Wrangler config template
+  README.md              # 3-minute deploy guide
 ```
 
 ## Key References

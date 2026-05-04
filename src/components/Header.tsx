@@ -1,4 +1,4 @@
-import { Brain, BarChart3, Beaker, Home } from 'lucide-react';
+import { Brain, BarChart3, Beaker, Home, Globe } from 'lucide-react';
 import type { AppView } from '../types';
 
 interface Props {
@@ -11,6 +11,7 @@ export default function Header({ view, onNavigate, streak }: Props) {
   const navItems: { view: AppView; label: string; Icon: typeof Home }[] = [
     { view: 'home', label: 'Train', Icon: Home },
     { view: 'dashboard', label: 'Dashboard', Icon: BarChart3 },
+    { view: 'global', label: 'Global', Icon: Globe },
     { view: 'science', label: 'Science', Icon: Beaker },
   ];
 

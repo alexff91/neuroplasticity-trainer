@@ -73,4 +73,4 @@ export interface Achievement {
   condition: (profile: UserProfile) => boolean;
 }
 
-export type AppView = 'home' | 'session' | 'exercise' | 'dashboard' | 'science';
+export type AppView = 'home' | 'session' | 'exercise' | 'dashboard' | 'science' | 'global';

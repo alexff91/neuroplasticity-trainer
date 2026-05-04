@@ -1,0 +1,8 @@
+name = "neuroforge-global"
+main = "worker.ts"
+compatibility_date = "2025-01-01"
+
+# Run `wrangler kv:namespace create NF_GLOBAL` and paste the id below.
+[[kv_namespaces]]
+binding = "NF_GLOBAL"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
