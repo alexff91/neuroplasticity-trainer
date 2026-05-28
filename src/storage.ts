@@ -10,6 +10,9 @@ export function getDefaultProfile(): UserProfile {
     currentStreak: 0,
     longestStreak: 0,
     lastSessionDate: null,
+    warmupStreak: 0,
+    longestWarmupStreak: 0,
+    lastWarmupDate: null,
     achievements: [],
     difficultyStates: {},
     dailyLogs: [],
@@ -26,7 +29,8 @@ export function loadProfile(): UserProfile {
       if (parsed.results && parsed.results.length > 500) {
         parsed.results = parsed.results.slice(-500);
       }
-      return parsed;
+      // Backfill fields added after this profile was first saved
+      return { ...getDefaultProfile(), ...parsed };
     }
   } catch {
     // corrupted storage, start fresh
