@@ -53,6 +53,9 @@ export interface UserProfile {
   currentStreak: number;
   longestStreak: number;
   lastSessionDate: string | null;
+  warmupStreak: number;
+  longestWarmupStreak: number;
+  lastWarmupDate: string | null;
   achievements: string[];
   difficultyStates: Record<string, DifficultyState>;
   dailyLogs: DailyLog[];
@@ -73,4 +76,4 @@ export interface Achievement {
   condition: (profile: UserProfile) => boolean;
 }
 
-export type AppView = 'home' | 'session' | 'exercise' | 'dashboard' | 'science';
+export type AppView = 'home' | 'session' | 'exercise' | 'warmup' | 'dashboard' | 'science';

@@ -16,9 +16,19 @@ import type { DifficultyState, ExerciseResult, UserProfile } from './types';
  * educational game using large-scale design experiments. CHI.
  */
 
-const K_FACTOR = 32;        // How fast the rating changes
-const BASE_ELO = 1000;      // Starting ELO
-const DIFFICULTY_PER_100_ELO = 1; // Map 100 ELO points to 1 difficulty level
+export const K_FACTOR = 32;        // How fast the rating changes
+export const BASE_ELO = 1000;      // Starting ELO
+export const DIFFICULTY_PER_100_ELO = 1; // Map 100 ELO points to 1 difficulty level
+
+/**
+ * Map an ELO rating to a difficulty level (1-based), clamped to an
+ * exercise's allowed range. Used by both the adaptive engine and the
+ * daily warm-up to scale rounds to the user's current ability.
+ */
+export function eloToDifficulty(elo: number, minDiff: number, maxDiff: number): number {
+  const raw = Math.round(1 + (elo - BASE_ELO) * DIFFICULTY_PER_100_ELO / 100);
+  return Math.max(minDiff, Math.min(maxDiff, raw));
+}
 
 export function getOrCreateDifficultyState(
   profile: UserProfile,

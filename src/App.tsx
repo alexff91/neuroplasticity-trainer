@@ -8,12 +8,15 @@ import HomeView from './components/HomeView';
 import SessionRunner from './components/SessionRunner';
 import Dashboard from './components/Dashboard';
 import SciencePage from './components/SciencePage';
+import WarmupStatCard from './components/WarmupStatCard';
+import { buildWarmupCircuit, computeReactionStat, advanceWarmupStreak, WARMUP_SESSION_PREFIX, type WarmupStep } from './warmup';
 
 function App() {
   const [view, setView] = useState<AppView>('home');
   const [profile, setProfile] = useState(() => loadProfile());
   const [sessionExercises, setSessionExercises] = useState<string[]>([]);
   const [sessionId, setSessionId] = useState('');
+  const [warmupSteps, setWarmupSteps] = useState<WarmupStep[]>([]);
 
   // Save profile whenever it changes
   useEffect(() => {
@@ -68,6 +71,30 @@ function App() {
     setView('session');
     updateStreak();
   }, [updateStreak]);
+
+  const handleStartWarmup = useCallback(() => {
+    setWarmupSteps(buildWarmupCircuit(profile));
+    setSessionId(`${WARMUP_SESSION_PREFIX}-${Date.now()}`);
+    setView('warmup');
+    updateStreak();
+  }, [profile, updateStreak]);
+
+  const handleWarmupEnd = useCallback(() => {
+    setProfile(prev => {
+      const today = getTodayString();
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+      const dailyLogs = prev.dailyLogs.map(d =>
+        d.date === today ? { ...d, sessionsCompleted: d.sessionsCompleted + 1 } : d
+      );
+      return {
+        ...prev,
+        totalSessions: prev.totalSessions + 1,
+        dailyLogs,
+        ...advanceWarmupStreak(prev, today, yesterday),
+      };
+    });
+    setView('home');
+  }, []);
 
   const handleExerciseComplete = useCallback((result: ExerciseResult) => {
     setProfile(prev => {
@@ -144,6 +171,7 @@ function App() {
             profile={profile}
             onStartSession={handleStartSession}
             onStartExercise={handleStartExercise}
+            onStartWarmup={handleStartWarmup}
           />
         )}
         {view === 'session' && (
@@ -153,6 +181,17 @@ function App() {
             sessionId={sessionId}
             onExerciseComplete={handleExerciseComplete}
             onSessionEnd={handleSessionEnd}
+          />
+        )}
+        {view === 'warmup' && (
+          <SessionRunner
+            exerciseIds={warmupSteps.map(s => s.exerciseId)}
+            profile={profile}
+            sessionId={sessionId}
+            onExerciseComplete={handleExerciseComplete}
+            onSessionEnd={handleWarmupEnd}
+            difficultyOverrides={Object.fromEntries(warmupSteps.map(s => [s.exerciseId, s.difficulty]))}
+            finishContent={<WarmupStatCard stat={computeReactionStat(profile)} />}
           />
         )}
         {view === 'dashboard' && <Dashboard profile={profile} />}
