@@ -6,3 +6,7 @@ export { default as GoNoGo } from './GoNoGo';
 export { default as MentalRotation } from './MentalRotation';
 export { default as WordChain } from './WordChain';
 export { default as StroopTest } from './StroopTest';
+export { default as MathSprint } from './MathSprint';
+export { default as ReactionTap } from './ReactionTap';
+export { default as SchulteTable } from './SchulteTable';
+export { default as Anagram } from './Anagram';

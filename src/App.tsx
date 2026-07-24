@@ -8,6 +8,8 @@ import HomeView from './components/HomeView';
 import SessionRunner from './components/SessionRunner';
 import Dashboard from './components/Dashboard';
 import SciencePage from './components/SciencePage';
+import GlobalView from './components/GlobalView';
+import { loadSettings, submitToGlobal } from './global';
 import WarmupStatCard from './components/WarmupStatCard';
 import { buildWarmupCircuit, computeReactionStat, advanceWarmupStreak, WARMUP_SESSION_PREFIX, type WarmupStep } from './warmup';
 
@@ -153,11 +155,17 @@ function App() {
       const dailyLogs = prev.dailyLogs.map(d =>
         d.date === today ? { ...d, sessionsCompleted: d.sessionsCompleted + 1 } : d
       );
-      return {
+      const next = {
         ...prev,
         totalSessions: prev.totalSessions + 1,
         dailyLogs,
       };
+      // Background sync to global mind if user opted in
+      const settings = loadSettings();
+      if (settings.enabled) {
+        void submitToGlobal(next, settings);
+      }
+      return next;
     });
     setView('home');
   }, []);
@@ -195,6 +203,7 @@ function App() {
           />
         )}
         {view === 'dashboard' && <Dashboard profile={profile} />}
+        {view === 'global' && <GlobalView profile={profile} />}
         {view === 'science' && <SciencePage />}
       </main>
     </>

@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, BarChart, Bar } from 'recharts';
-import { Calendar, TrendingUp, Award, Brain, Clock } from 'lucide-react';
+import { Calendar, TrendingUp, Award, Brain, Clock, Download, Upload } from 'lucide-react';
 import type { UserProfile, CognitiveSkill } from '../types';
 import { SKILL_LABELS, SKILL_COLORS, ACHIEVEMENTS } from '../exercises';
 
@@ -9,6 +9,38 @@ interface Props {
 }
 
 export default function Dashboard({ profile }: Props) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleExport = () => {
+    const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `neuroforge-profile-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportClick = () => fileInputRef.current?.click();
+
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+      if (typeof parsed !== 'object' || !parsed.results || !Array.isArray(parsed.results)) {
+        alert('Invalid profile file');
+        return;
+      }
+      if (!confirm('Replace your current profile with imported data? This cannot be undone.')) return;
+      localStorage.setItem('neuroforge_profile', text);
+      window.location.reload();
+    } catch {
+      alert('Failed to import: could not parse file');
+    }
+  };
+
   // Daily score trend (last 30 days)
   const dailyTrend = useMemo(() => {
     return profile.dailyLogs.slice(-30).map(log => ({
@@ -85,16 +117,37 @@ export default function Dashboard({ profile }: Props) {
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem 1rem' }}>
-      <h1 style={{
-        fontSize: '1.5rem',
-        fontWeight: 800,
-        marginBottom: '1.5rem',
-        background: 'var(--gradient-primary)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-      }}>
-        Brain Health Dashboard
-      </h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <h1 style={{
+          fontSize: '1.5rem',
+          fontWeight: 800,
+          background: 'var(--gradient-primary)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          margin: 0,
+        }}>
+          Brain Health Dashboard
+        </h1>
+        <div style={{ display: 'flex', gap: '0.4rem' }}>
+          <button onClick={handleExport} title="Export profile as JSON" style={{
+            display: 'flex', alignItems: 'center', gap: '0.35rem',
+            padding: '0.5rem 0.85rem', borderRadius: 'var(--radius-sm)',
+            background: 'var(--bg-card)', color: 'var(--text-secondary)',
+            border: '1px solid var(--border-color)', fontSize: '0.8rem', fontWeight: 600,
+          }}>
+            <Download size={14} /> Export
+          </button>
+          <button onClick={handleImportClick} title="Import profile JSON" style={{
+            display: 'flex', alignItems: 'center', gap: '0.35rem',
+            padding: '0.5rem 0.85rem', borderRadius: 'var(--radius-sm)',
+            background: 'var(--bg-card)', color: 'var(--text-secondary)',
+            border: '1px solid var(--border-color)', fontSize: '0.8rem', fontWeight: 600,
+          }}>
+            <Upload size={14} /> Import
+          </button>
+          <input ref={fileInputRef} type="file" accept="application/json" onChange={handleImportFile} style={{ display: 'none' }} />
+        </div>
+      </div>
 
       {/* Summary Stats */}
       <div style={{
