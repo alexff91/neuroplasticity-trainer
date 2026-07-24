@@ -1,17 +1,22 @@
-import { Brain, Clock, Trophy, TrendingUp, ChevronRight, Sparkles } from 'lucide-react';
+import { Brain, Clock, Trophy, TrendingUp, ChevronRight, Sparkles, Zap } from 'lucide-react';
 import type { UserProfile, CognitiveSkill } from '../types';
 import { EXERCISES, SKILL_LABELS, SKILL_COLORS, ACHIEVEMENTS } from '../exercises';
 import { getTodayString } from '../storage';
 import { computeBrainScore } from '../global';
+import { computeReactionStat, WARMUP_DURATION_MINUTES } from '../warmup';
+import WarmupStatCard from './WarmupStatCard';
 
 interface Props {
   profile: UserProfile;
   onStartSession: (duration: number) => void;
   onStartExercise: (exerciseId: string) => void;
+  onStartWarmup: () => void;
 }
 
-export default function HomeView({ profile, onStartSession, onStartExercise }: Props) {
+export default function HomeView({ profile, onStartSession, onStartExercise, onStartWarmup }: Props) {
   const today = getTodayString();
+  const warmupDoneToday = profile.lastWarmupDate === today;
+  const reactionStat = computeReactionStat(profile);
   const todayLog = profile.dailyLogs.find(d => d.date === today);
   const todayExercises = todayLog?.totalExercises || 0;
 
@@ -147,6 +152,50 @@ export default function HomeView({ profile, onStartSession, onStartExercise }: P
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{stat.label}</div>
           </div>
         ))}
+      </div>
+
+      {/* Daily Warm-Up */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(251,191,36,0.12), rgba(129,140,248,0.12))',
+        border: '1px solid rgba(251,191,36,0.3)',
+        borderRadius: 'var(--radius)',
+        padding: '1.25rem',
+        marginBottom: '2rem',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Zap size={18} color="var(--accent-warning)" />
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Daily Brain Warm-Up</h2>
+            </div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+              {WARMUP_DURATION_MINUTES} min &middot; one round of all {EXERCISES.length} exercises, scaled to you
+              {profile.warmupStreak > 0 && (
+                <span style={{ color: 'var(--accent-warning)', fontWeight: 700, marginLeft: '0.5rem' }}>
+                  &#x1F525; {profile.warmupStreak}d warm-up streak
+                </span>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={onStartWarmup}
+            style={{
+              padding: '0.75rem 1.75rem',
+              borderRadius: 'var(--radius)',
+              background: warmupDoneToday ? 'var(--bg-card)' : 'var(--accent-warning)',
+              color: warmupDoneToday ? 'var(--text-secondary)' : '#1a1a1a',
+              fontWeight: 700,
+              fontSize: '0.95rem',
+              border: warmupDoneToday ? '1px solid var(--border-color)' : 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {warmupDoneToday ? 'Warm up again' : 'Start warm-up'}
+          </button>
+        </div>
+        <div style={{ marginTop: '0.75rem' }}>
+          <WarmupStatCard stat={reactionStat} compact />
+        </div>
       </div>
 
       {/* Session Buttons */}

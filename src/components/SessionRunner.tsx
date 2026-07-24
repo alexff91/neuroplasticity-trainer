@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import type { ReactNode } from 'react';
 import { ArrowLeft, Check, X } from 'lucide-react';
 import type { ExerciseResult, UserProfile } from '../types';
 import { EXERCISES, SKILL_LABELS, SKILL_COLORS } from '../exercises';
@@ -11,9 +12,14 @@ interface Props {
   sessionId: string;
   onExerciseComplete: (result: ExerciseResult) => void;
   onSessionEnd: () => void;
+  // When provided, use this difficulty per exercise instead of the adaptive
+  // current difficulty (used by the ELO-scaled daily warm-up).
+  difficultyOverrides?: Record<string, number>;
+  // Extra content shown on the final result screen (e.g. warm-up stat).
+  finishContent?: ReactNode;
 }
 
-export default function SessionRunner({ exerciseIds, profile, sessionId, onExerciseComplete, onSessionEnd }: Props) {
+export default function SessionRunner({ exerciseIds, profile, sessionId, onExerciseComplete, onSessionEnd, difficultyOverrides, finishContent }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<'intro' | 'playing' | 'result'>('intro');
   const [lastResult, setLastResult] = useState<{ score: number; accuracy: number } | null>(null);
@@ -25,13 +31,14 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
   const handleComplete = useCallback((score: number, accuracy: number, responseTimeMs: number) => {
     if (!exercise) return;
     const diffState = getOrCreateDifficultyState(profile, exercise.id);
+    const difficulty = difficultyOverrides?.[exercise.id] ?? diffState.currentDifficulty;
     const result: ExerciseResult = {
       exerciseId: exercise.id,
       skill: exercise.skill,
       score,
       accuracy,
       responseTimeMs,
-      difficulty: diffState.currentDifficulty,
+      difficulty,
       timestamp: Date.now(),
       sessionId,
     };
@@ -39,7 +46,7 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
     setLastResult({ score, accuracy });
     setCompletedResults(prev => [...prev, { exerciseId: exercise.id, score }]);
     setPhase('result');
-  }, [exercise, profile, sessionId, onExerciseComplete]);
+  }, [exercise, profile, sessionId, onExerciseComplete, difficultyOverrides]);
 
   const handleNext = () => {
     if (currentIndex + 1 >= exerciseIds.length) {
@@ -56,10 +63,11 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
   }
 
   const diffState = getOrCreateDifficultyState(profile, exercise.id);
+  const effectiveDifficulty = difficultyOverrides?.[exercise.id] ?? diffState.currentDifficulty;
   const color = SKILL_COLORS[exercise.skill] || 'var(--accent-primary)';
 
   const renderGame = () => {
-    const diff = diffState.currentDifficulty;
+    const diff = effectiveDifficulty;
     const p = { difficulty: diff, onComplete: handleComplete };
     switch (exercise.id) {
       case 'pattern-matrix': return <PatternMatrix {...p} />;
@@ -146,7 +154,7 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
             fontWeight: 600,
             marginBottom: '1rem',
           }}>
-            {SKILL_LABELS[exercise.skill]} &middot; Level {diffState.currentDifficulty}
+            {SKILL_LABELS[exercise.skill]} &middot; Level {effectiveDifficulty}
           </div>
           <p style={{
             color: 'var(--text-secondary)',
@@ -278,6 +286,8 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
               })}
             </div>
           )}
+
+          {currentIndex + 1 >= exerciseIds.length && finishContent}
 
           <button
             onClick={handleNext}
