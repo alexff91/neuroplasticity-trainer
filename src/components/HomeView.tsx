@@ -1,4 +1,4 @@
-import { Brain, Clock, Trophy, TrendingUp, ChevronRight, Sparkles, Zap } from 'lucide-react';
+import { Brain, Clock, Trophy, TrendingUp, ChevronRight, Sparkles, Zap, Check } from 'lucide-react';
 import type { UserProfile, CognitiveSkill } from '../types';
 import { EXERCISES, SKILL_LABELS, SKILL_COLORS, ACHIEVEMENTS } from '../exercises';
 import { getTodayString } from '../storage';
@@ -91,45 +91,99 @@ export default function HomeView({ profile, onStartSession, onStartExercise, onS
       </div>
 
       {/* Daily Warm-Up */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(251,191,36,0.12), rgba(129,140,248,0.12))',
-        border: '1px solid rgba(251,191,36,0.3)',
-        borderRadius: 'var(--radius)',
-        padding: '1.25rem',
-        marginBottom: '2rem',
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Zap size={18} color="var(--accent-warning)" />
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Daily Brain Warm-Up</h2>
-            </div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-              {WARMUP_DURATION_MINUTES} min &middot; one round of all {EXERCISES.length} exercises, scaled to you
-              {profile.warmupStreak > 0 && (
-                <span style={{ color: 'var(--accent-warning)', fontWeight: 700, marginLeft: '0.5rem' }}>
-                  &#x1F525; {profile.warmupStreak}d warm-up streak
+      <div className="warmup-hero" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem', flexWrap: 'wrap' }}>
+          <div style={{ minWidth: '240px', flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem' }}>
+              <Zap size={14} color="var(--accent-warning)" fill="var(--accent-warning)" />
+              <span className="warmup-eyebrow">Daily Ritual &middot; {WARMUP_DURATION_MINUTES} min</span>
+              {warmupDoneToday && (
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.2rem',
+                  fontSize: '0.65rem',
+                  fontWeight: 800,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: 'var(--accent-success)',
+                  background: 'rgba(52,211,153,0.14)',
+                  border: '1px solid rgba(52,211,153,0.35)',
+                  borderRadius: '999px',
+                  padding: '0.1rem 0.5rem',
+                }}>
+                  <Check size={11} strokeWidth={3} /> Done
                 </span>
               )}
             </div>
+
+            <h2 className="warmup-title">Brain Warm-Up</h2>
+
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.4rem', maxWidth: '31ch' }}>
+              One round of all {EXERCISES.length} exercises, each tuned to your current level.
+            </p>
+
+            {/* Circuit preview: one dot per exercise, colored by skill */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '0.9rem' }}>
+              {EXERCISES.map((ex, i) => {
+                const c = SKILL_COLORS[ex.skill] || 'var(--accent-primary)';
+                return (
+                  <span
+                    key={ex.id}
+                    className="warmup-dot"
+                    title={`${ex.name} — ${SKILL_LABELS[ex.skill]}`}
+                    style={{
+                      background: c,
+                      boxShadow: `0 0 10px ${c}90`,
+                      animationDelay: `${i * 60}ms`,
+                    }}
+                  />
+                );
+              })}
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginLeft: '0.35rem', fontWeight: 600 }}>
+                {EXERCISES.length} rounds
+              </span>
+            </div>
           </div>
-          <button
-            onClick={onStartWarmup}
-            style={{
-              padding: '0.75rem 1.75rem',
-              borderRadius: 'var(--radius)',
-              background: warmupDoneToday ? 'var(--bg-card)' : 'var(--accent-warning)',
-              color: warmupDoneToday ? 'var(--text-secondary)' : '#1a1a1a',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              border: warmupDoneToday ? '1px solid var(--border-color)' : 'none',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {warmupDoneToday ? 'Warm up again' : 'Start warm-up'}
-          </button>
+
+          {/* Streak + CTA */}
+          <div className="warmup-actions">
+            {profile.warmupStreak > 0 && (
+              <div style={{ textAlign: 'center', lineHeight: 1.1 }}>
+                <div style={{ fontSize: '1.9rem' }}>
+                  <span className="warmup-flame">&#x1F525;</span>
+                </div>
+                <div style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 800,
+                  background: 'var(--gradient-warm)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  {profile.warmupStreak}
+                </div>
+                <div style={{
+                  fontSize: '0.62rem',
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  fontWeight: 700,
+                }}>
+                  day streak
+                </div>
+              </div>
+            )}
+            <button
+              onClick={onStartWarmup}
+              className={`warmup-cta${warmupDoneToday ? ' warmup-cta--done' : ''}`}
+            >
+              {warmupDoneToday ? 'Go again' : 'Start warm-up'}
+            </button>
+          </div>
         </div>
-        <div style={{ marginTop: '0.75rem' }}>
+
+        <div style={{ marginTop: '1.1rem' }}>
           <WarmupStatCard stat={reactionStat} compact />
         </div>
       </div>

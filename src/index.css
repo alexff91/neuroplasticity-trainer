@@ -100,9 +100,178 @@ a:hover {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes auroraDrift {
+  0%   { transform: translate3d(-8%, -6%, 0) scale(1.1); }
+  50%  { transform: translate3d(8%, 6%, 0) scale(1.25); }
+  100% { transform: translate3d(-8%, -6%, 0) scale(1.1); }
+}
+
+@keyframes shineSweep {
+  0%   { transform: translateX(-140%) skewX(-20deg); }
+  60%, 100% { transform: translateX(260%) skewX(-20deg); }
+}
+
+@keyframes glowBreathe {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%      { transform: scale(1.12) rotate(2deg); }
+}
+
+@keyframes dotPop {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 .animate-fade-in { animation: fadeIn 0.4s ease-out; }
 .animate-slide-in { animation: slideIn 0.3s ease-out; }
 .animate-count-up { animation: countUp 0.5s ease-out; }
+
+/* --- Daily warm-up hero --- */
+.warmup-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  background: linear-gradient(160deg, #16203a 0%, #131a30 60%, #1a1630 100%);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+}
+
+/* Drifting aurora wash behind the content */
+.warmup-hero::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -2;
+  background:
+    radial-gradient(38% 44% at 18% 28%, rgba(251, 191, 36, 0.30), transparent 70%),
+    radial-gradient(42% 46% at 82% 24%, rgba(192, 132, 252, 0.28), transparent 70%),
+    radial-gradient(46% 50% at 55% 88%, rgba(56, 189, 248, 0.22), transparent 70%);
+  animation: auroraDrift 18s ease-in-out infinite;
+}
+
+/* Fine grid texture, fading out toward the bottom */
+.warmup-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+}
+
+.warmup-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-warning);
+}
+
+.warmup-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.15;
+  background: linear-gradient(100deg, #fde68a 0%, #fbbf24 35%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.warmup-cta {
+  position: relative;
+  overflow: hidden;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #1a1206;
+  white-space: nowrap;
+  background: linear-gradient(120deg, #fcd34d, #fbbf24 45%, #f59e0b);
+  box-shadow: 0 8px 24px -6px rgba(251, 191, 36, 0.65);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.warmup-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px -8px rgba(251, 191, 36, 0.8);
+  filter: saturate(1.1);
+}
+
+.warmup-cta:active { transform: translateY(0); }
+
+/* Light sweeping across the CTA */
+.warmup-cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shineSweep 3.6s ease-in-out infinite;
+}
+
+.warmup-cta--done {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+}
+
+.warmup-cta--done::after { animation: none; opacity: 0; }
+
+.warmup-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  animation: dotPop 0.35s ease-out backwards;
+}
+
+.warmup-flame {
+  display: inline-block;
+  animation: flameFlicker 1.8s ease-in-out infinite;
+}
+
+.warmup-stat-glow { animation: glowBreathe 3s ease-in-out infinite; }
+
+.warmup-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+/* On narrow screens the actions drop below the copy — lay them out as a
+   full-width row so the CTA stays a comfortable tap target. */
+@media (max-width: 560px) {
+  .warmup-actions {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .warmup-actions .warmup-cta { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .warmup-hero::before,
+  .warmup-cta::after,
+  .warmup-flame,
+  .warmup-dot,
+  .warmup-stat-glow {
+    animation: none !important;
+  }
+  .warmup-cta::after { opacity: 0; }
+}
 
 @media (max-width: 768px) {
   html { font-size: 14px; }
