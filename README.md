@@ -24,13 +24,13 @@ Most "brain training" apps are gamified toys with no scientific foundation. Neur
 | **N-Back Challenge** | Working Memory | Prefrontal & parietal cortex | Soveri et al. (2017), Psychonomic Bull. |
 | **Math Sprint** | Working Memory | Intraparietal sulcus, PFC | Dehaene et al. (2003), Cog. Neuropsych. |
 | **Speed Match** | Processing Speed | Myelination circuits | Ball et al. (2002), JAMA |
-| **Reaction Tap** | Processing Speed | Cortico-spinal pathways | Deary et al. (2010), Behavior Genetics |
+| **Reaction Tap** | Processing Speed | Cortico-spinal pathways | Deary & Der (2005), Aging Neuropsychol. Cogn. |
 | **Go/No-Go** | Attention Control | Right inferior frontal gyrus | Aron et al. (2004), Trends in Cog. Sci. |
 | **Stroop Challenge** | Attention Control | Anterior cingulate cortex | MacLeod (1991), Psych. Bulletin |
 | **Schulte Table** | Attention Control | Dorsal attention network | Posner & Petersen (1990), Annu. Rev. Neurosci. |
 | **Mental Rotation** | Spatial Reasoning | Posterior parietal cortex | Uttal et al. (2013), Psych. Bulletin |
 | **Word Chain** | Verbal Fluency | Broca's area, temporal cortex | Henry & Crawford (2004), Neuropsych. |
-| **Anagram Solver** | Verbal Fluency | Left IFG, anterior temporal | Aziz-Zadeh et al. (2009), Brain Res. |
+| **Anagram Solver** | Verbal Fluency | Left IFG, anterior temporal | Aziz-Zadeh et al. (2009), Hum. Brain Mapp. |
 
 ## Features
 
@@ -84,7 +84,7 @@ A privacy-respecting global benchmark layer:
 - **Backend is open-source.** A 150-line [Cloudflare Worker](server/worker.ts) you can self-host on the free tier. See [`server/README.md`](server/README.md) for the 3-minute deploy.
 - **Profile portability.** Export/import your full profile as JSON from the Dashboard for backup or device transfer.
 
-When no backend is configured, the Global tab shows static seed benchmarks so the UI still demonstrates the feature.
+When no backend is configured there is no community data, so the Global tab shows the feature with empty counters ("no data yet") and compares your scores against a fixed, clearly labelled illustrative reference line rather than inventing trainee counts or averages.
 
 ## Scientific Foundation
 
@@ -169,19 +169,22 @@ server/                  # Optional self-hostable Cloudflare Worker backend
 ## Key References
 
 - Aron, A.R., et al. (2004). Inhibition and the right inferior frontal cortex. *Trends in Cognitive Sciences*, 8(4), 170-177.
-- Ball, K., et al. (2002). Effects of cognitive training interventions with older adults: ACTIVE RCT. *JAMA*, 288(18), 2271-2281.
-- Bjork, R.A. (1994). Memory and metamemory considerations in the training of human beings. MIT Press.
-- Cepeda, N.J., et al. (2006). Distributed practice in verbal recall tasks. *Psychological Bulletin*, 132(3), 354.
-- Draganski, B., et al. (2004). Neuroplasticity: Changes in grey matter induced by training. *Nature*, 427, 311-312.
+- Aziz-Zadeh, L., et al. (2009). "Aha!": The neural correlates of verbal insight solutions. *Human Brain Mapping*, 30(3), 908-916.
+- Ball, K., et al. (2002). Effects of cognitive training interventions with older adults: a randomized controlled trial. *JAMA*, 288(18), 2271-2281.
+- Bjork, R.A. (1994). Memory and metamemory considerations in the training of human beings. In J. Metcalfe & A.P. Shimamura (Eds.), *Metacognition: Knowing about knowing* (pp. 185-205). Cambridge, MA: MIT Press.
+- Cepeda, N.J., et al. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. *Psychological Bulletin*, 132(3), 354-380.
+- Deary, I.J. & Der, G. (2005). Reaction time, age, and cognitive ability: Longitudinal findings from age 16 to 63 years in representative population samples. *Aging, Neuropsychology, and Cognition*, 12(2), 187-215.
+- Draganski, B., et al. (2004). Changes in grey matter induced by training. *Nature*, 427(6972), 311-312.
 - Fields, R.D. (2008). White matter in learning, cognition and psychiatric disorders. *Trends in Neurosciences*, 31(7), 361-370.
-- Henry, J.D. & Crawford, J.R. (2004). A meta-analytic review of verbal fluency performance. *Neuropsychology*, 18(2), 284.
+- Henry, J.D. & Crawford, J.R. (2004). A meta-analytic review of verbal fluency performance following focal cortical lesions. *Neuropsychology*, 18(2), 284-295.
 - Jaeggi, S.M., et al. (2008). Improving fluid intelligence with training on working memory. *PNAS*, 105(19), 6829-6833.
 - Klingberg, T. (2010). Training and plasticity of working memory. *Trends in Cognitive Sciences*, 14(7), 317-324.
-- MacLeod, C.M. (1991). Half a century of research on the Stroop effect. *Psychological Bulletin*, 109(2), 163.
-- Rohrer, D. & Taylor, K. (2007). The shuffling of mathematics problems improves learning. *Instructional Science*, 35, 481-498.
+- MacLeod, C.M. (1991). Half a century of research on the Stroop effect: An integrative review. *Psychological Bulletin*, 109(2), 163-203.
+- Posner, M.I. & Petersen, S.E. (1990). The attention system of the human brain. *Annual Review of Neuroscience*, 13, 25-42.
+- Rohrer, D. & Taylor, K. (2007). The shuffling of mathematics problems improves learning. *Instructional Science*, 35(6), 481-498.
 - Simons, D.J., et al. (2016). Do "Brain-Training" programs work? *Psychological Science in the Public Interest*, 17(3), 103-186.
-- Soveri, A., et al. (2017). Working memory training revisited. *Psychonomic Bulletin & Review*, 24(4), 1077-1096.
-- Uttal, D.H., et al. (2013). The malleability of spatial skills. *Psychological Bulletin*, 139(2), 352.
+- Soveri, A., et al. (2017). Working memory training revisited: A multi-level meta-analysis of n-back training studies. *Psychonomic Bulletin & Review*, 24(4), 1077-1096.
+- Uttal, D.H., et al. (2013). The malleability of spatial skills: A meta-analysis of training studies. *Psychological Bulletin*, 139(2), 352-402.
 
 ## License
 

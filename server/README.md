@@ -32,7 +32,7 @@ VITE_GLOBAL_API_URL=https://neuroforge-global.<your-subdomain>.workers.dev \
   npm run build
 ```
 
-That's it. The Global tab will switch from "seed benchmarks" to live data.
+That's it. The Global tab will switch from the illustrative placeholder to live data.
 
 ## Wire format
 

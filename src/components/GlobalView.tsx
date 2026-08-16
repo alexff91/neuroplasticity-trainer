@@ -11,6 +11,8 @@ import {
   computeBrainScore,
   compareToGlobal,
   isBackendConfigured,
+  isIllustrative,
+  ILLUSTRATIVE_SKILL_REFERENCE,
   type GlobalAggregate,
   type GlobalSettings,
 } from '../global';
@@ -70,6 +72,9 @@ export default function GlobalView({ profile }: Props) {
   const myScore = computeBrainScore(profile);
   const comparisons = aggregate ? compareToGlobal(profile, aggregate) : [];
   const backend = isBackendConfigured();
+  // When true, nothing on this page comes from real users: community counters
+  // are placeholders and the comparison bars use a fixed reference line.
+  const illustrative = isIllustrative(aggregate);
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: '800px', margin: '0 auto', padding: '1.5rem 1rem' }}>
@@ -194,7 +199,7 @@ export default function GlobalView({ profile }: Props) {
         }}>
           <AlertCircle size={18} color="var(--accent-warning)" style={{ flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <strong style={{ color: 'var(--accent-warning)' }}>No backend configured.</strong> Showing seed benchmarks. Self-host the global mind in 5 minutes by deploying <code>server/worker.ts</code> to Cloudflare Workers and setting <code>VITE_GLOBAL_API_URL</code> at build time. See README.
+            <strong style={{ color: 'var(--accent-warning)' }}>No backend configured — no real community data.</strong> There are no other trainees to compare against, so the counters below are empty and the comparison bars use a fixed 60% reference line, not a measured average. Self-host the global mind in 5 minutes by deploying <code>server/worker.ts</code> to Cloudflare Workers and setting <code>VITE_GLOBAL_API_URL</code> at build time. See README.
           </div>
         </div>
       )}
@@ -207,21 +212,36 @@ export default function GlobalView({ profile }: Props) {
         marginBottom: '1.5rem',
       }}>
         {[
-          { label: 'Trainees', value: aggregate?.totalUsers ?? '—', icon: <Users size={18} />, color: 'var(--accent-info)' },
-          { label: 'Exercises', value: aggregate?.totalExercises.toLocaleString() ?? '—', icon: <Activity size={18} />, color: 'var(--accent-primary)' },
-          { label: 'Sessions', value: aggregate?.totalSessions.toLocaleString() ?? '—', icon: <Sparkles size={18} />, color: 'var(--accent-secondary)' },
-          { label: 'Your Brain Score', value: myScore || '—', icon: <Trophy size={18} />, color: 'var(--accent-warning)' },
+          // Community counters are only real when a backend reported them.
+          // Without one there is nothing to count, so show a placeholder
+          // instead of a number a reader could mistake for a headcount.
+          { label: 'Trainees', value: illustrative ? '—' : aggregate!.totalUsers.toLocaleString(), placeholder: illustrative, icon: <Users size={18} />, color: 'var(--accent-info)' },
+          { label: 'Exercises', value: illustrative ? '—' : aggregate!.totalExercises.toLocaleString(), placeholder: illustrative, icon: <Activity size={18} />, color: 'var(--accent-primary)' },
+          { label: 'Sessions', value: illustrative ? '—' : aggregate!.totalSessions.toLocaleString(), placeholder: illustrative, icon: <Sparkles size={18} />, color: 'var(--accent-secondary)' },
+          // This one is genuinely the user's own, locally computed score.
+          { label: 'Your Brain Score', value: myScore || '—', placeholder: false, icon: <Trophy size={18} />, color: 'var(--accent-warning)' },
         ].map((s, i) => (
           <div key={i} style={{
             background: 'var(--bg-card)',
             borderRadius: 'var(--radius)',
             padding: '1rem',
             textAlign: 'center',
-            border: '1px solid var(--border-color)',
+            border: s.placeholder ? '1px dashed var(--border-color)' : '1px solid var(--border-color)',
           }}>
             <div style={{ marginBottom: '0.25rem', color: s.color }}>{s.icon}</div>
-            <div style={{ fontSize: '1.4rem', fontWeight: 700 }}>{loading ? '…' : s.value}</div>
+            <div style={{
+              fontSize: '1.4rem',
+              fontWeight: 700,
+              color: s.placeholder ? 'var(--text-muted)' : undefined,
+            }}>
+              {loading ? '…' : s.value}
+            </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{s.label}</div>
+            {s.placeholder && !loading && (
+              <div style={{ fontSize: '0.65rem', color: 'var(--accent-warning)', marginTop: '0.2rem', fontWeight: 600 }}>
+                no data yet
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -235,7 +255,15 @@ export default function GlobalView({ profile }: Props) {
           border: '1px solid var(--border-color)',
           marginBottom: '1.5rem',
         }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.75rem' }}>You vs Global Average</h3>
+          <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: illustrative ? '0.35rem' : '0.75rem' }}>
+            {illustrative ? 'You vs Illustrative Reference' : 'You vs Global Average'}
+          </h3>
+          {illustrative && (
+            <p style={{ fontSize: '0.75rem', color: 'var(--accent-warning)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
+              Example only: the grey marker is a fixed {ILLUSTRATIVE_SKILL_REFERENCE}% line, not the average of real
+              trainees. Connect a backend to compare against actual people.
+            </p>
+          )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {comparisons.map(c => {
               if (c.user === 0) return null;
@@ -251,7 +279,7 @@ export default function GlobalView({ profile }: Props) {
                       color: c.delta >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)',
                       fontWeight: 700,
                     }}>
-                      {c.delta >= 0 ? '+' : ''}{c.delta} vs global
+                      {c.delta >= 0 ? '+' : ''}{c.delta} vs {illustrative ? 'reference' : 'global'}
                     </span>
                   </div>
                   <div style={{ position: 'relative', height: '14px', background: 'var(--bg-primary)', borderRadius: '7px', overflow: 'hidden' }}>
@@ -275,7 +303,7 @@ export default function GlobalView({ profile }: Props) {
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                     <span>You: <strong style={{ color }}>{c.user}</strong></span>
-                    <span>Global: <strong>{Math.round(c.global * (max / 100)) / (max / 100)}</strong></span>
+                    <span>{illustrative ? 'Reference' : 'Global'}: <strong>{Math.round(c.global * (max / 100)) / (max / 100)}</strong></span>
                   </div>
                 </div>
               );

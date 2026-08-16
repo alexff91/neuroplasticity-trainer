@@ -8,8 +8,9 @@ import { SKILL_LABELS } from './exercises';
  *  - Local-first. The app must work fully offline; this layer only adds extras.
  *  - Anonymous by default. We send a randomly generated handle, never PII.
  *  - Pluggable backend. Endpoint is configured via VITE_GLOBAL_API_URL.
- *  - Graceful degradation. If no backend is configured, we fall back to
- *    static seed data so the UI still has something meaningful to show.
+ *  - Graceful degradation. If no backend is configured, we fall back to an
+ *    illustrative placeholder aggregate. It contains no invented community
+ *    figures, and the UI must label everything drawn from it as illustrative.
  *
  * Reference deployment: a Cloudflare Worker (see /server/worker.ts) that
  * stores anonymous aggregated stats in a single Workers KV namespace.
@@ -41,24 +42,46 @@ const SETTINGS_KEY = 'neuroforge_global_settings';
 const CACHE_KEY = 'neuroforge_global_cache';
 const ENDPOINT: string = (import.meta.env.VITE_GLOBAL_API_URL as string | undefined) || '';
 
-// Static seed data shown when no backend is configured.
-// Calibrated to plausible benchmark ranges so users have something to compare to.
+/**
+ * The illustrative reference line used when no backend is configured.
+ *
+ * These are NOT measurements. No community data exists until a backend is
+ * deployed, so:
+ *  - the community counters are 0 and the UI renders them as placeholders
+ *    rather than inventing a headcount;
+ *  - every skill uses the same flat reference value, so the comparison bars
+ *    still have a yardstick to draw against without implying that anyone
+ *    measured a per-skill population average.
+ *
+ * Anything derived from this object must be labelled as illustrative in the
+ * UI — see `isIllustrative()`.
+ */
+export const ILLUSTRATIVE_SKILL_REFERENCE = 60;
+
 const SEED: GlobalAggregate = {
-  totalUsers: 1247,
-  totalExercises: 184_320,
-  totalSessions: 38_910,
+  totalUsers: 0,
+  totalExercises: 0,
+  totalSessions: 0,
   skillAverages: {
-    'pattern-recognition': 64,
-    'working-memory': 58,
-    'reaction-time': 71,
-    'spatial-reasoning': 62,
-    'verbal-fluency': 60,
-    'attention-control': 66,
+    'pattern-recognition': ILLUSTRATIVE_SKILL_REFERENCE,
+    'working-memory': ILLUSTRATIVE_SKILL_REFERENCE,
+    'reaction-time': ILLUSTRATIVE_SKILL_REFERENCE,
+    'spatial-reasoning': ILLUSTRATIVE_SKILL_REFERENCE,
+    'verbal-fluency': ILLUSTRATIVE_SKILL_REFERENCE,
+    'attention-control': ILLUSTRATIVE_SKILL_REFERENCE,
   },
   top: [],
   updatedAt: 0,
   source: 'seed',
 };
+
+/**
+ * True when the aggregate on screen is the illustrative placeholder rather
+ * than data reported by a backend. Callers must label such values.
+ */
+export function isIllustrative(a: GlobalAggregate | null | undefined): boolean {
+  return !a || a.source === 'seed';
+}
 
 const ADJECTIVES = ['Swift', 'Quiet', 'Bright', 'Cosmic', 'Lucid', 'Bold', 'Crisp', 'Vivid', 'Keen', 'Stellar', 'Solar', 'Lunar', 'Rapid', 'Sharp', 'Calm'];
 const NOUNS = ['Neuron', 'Synapse', 'Cortex', 'Axon', 'Dendrite', 'Lobe', 'Node', 'Pulse', 'Signal', 'Memory', 'Photon', 'Atlas', 'Tessera', 'Quanta', 'Helix'];
