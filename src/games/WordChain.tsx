@@ -1,65 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { generateChallenge } from './wordChainChallenge';
 
 interface Props {
   difficulty: number;
   onComplete: (score: number, accuracy: number, responseTimeMs: number) => void;
-}
-
-// Word lists by category
-const CATEGORIES: Record<string, string[]> = {
-  'Animals': ['cat', 'dog', 'bird', 'fish', 'lion', 'bear', 'wolf', 'deer', 'hawk', 'frog', 'snake', 'whale', 'shark', 'eagle', 'tiger', 'zebra', 'horse', 'mouse', 'goat', 'duck', 'swan', 'crab', 'seal', 'dove', 'crow', 'moth', 'wasp', 'ant', 'bee', 'owl'],
-  'Foods': ['rice', 'cake', 'bread', 'soup', 'fish', 'meat', 'corn', 'bean', 'plum', 'lime', 'pear', 'date', 'fig', 'jam', 'nut', 'pie', 'ham', 'yam', 'oat', 'egg', 'milk', 'salt', 'sage', 'mint', 'dill', 'kale', 'tofu', 'lamb', 'veal', 'tuna'],
-  'Colors': ['red', 'blue', 'gold', 'pink', 'gray', 'teal', 'lime', 'plum', 'ruby', 'jade', 'navy', 'rose', 'sage', 'rust', 'wine', 'sand', 'coal', 'snow', 'moss', 'fawn'],
-  'Body Parts': ['arm', 'leg', 'eye', 'ear', 'toe', 'lip', 'hip', 'rib', 'jaw', 'shin', 'knee', 'palm', 'nail', 'bone', 'skin', 'hair', 'back', 'neck', 'foot', 'hand'],
-  'Nature': ['tree', 'lake', 'hill', 'rain', 'snow', 'wind', 'rock', 'sand', 'clay', 'moss', 'vine', 'leaf', 'root', 'bark', 'wave', 'tide', 'reef', 'cave', 'peak', 'vale'],
-};
-
-type ChallengeType = 'category' | 'starting-letter' | 'ending-letter';
-
-interface Challenge {
-  type: ChallengeType;
-  prompt: string;
-  validate: (word: string) => boolean;
-  hints: string[];
-}
-
-function generateChallenge(difficulty: number): Challenge {
-  const types: ChallengeType[] = ['category'];
-  if (difficulty >= 3) types.push('starting-letter');
-  if (difficulty >= 5) types.push('ending-letter');
-
-  const type = types[Math.floor(Math.random() * types.length)];
-
-  if (type === 'category') {
-    const cats = Object.keys(CATEGORIES);
-    const cat = cats[Math.floor(Math.random() * cats.length)];
-    return {
-      type: 'category',
-      prompt: `Name things in category: ${cat}`,
-      validate: (w) => {
-        // Accept any reasonable word (we're lenient)
-        return w.length >= 2 && /^[a-z]+$/i.test(w);
-      },
-      hints: CATEGORIES[cat].slice(0, 5),
-    };
-  } else if (type === 'starting-letter') {
-    const letter = 'ABCDEFGHIJKLMNOPRSTW'[Math.floor(Math.random() * 20)];
-    return {
-      type: 'starting-letter',
-      prompt: `Words starting with "${letter}"`,
-      validate: (w) => w.length >= 2 && w[0].toUpperCase() === letter,
-      hints: [],
-    };
-  } else {
-    const letters = 'ADEGILMNORST';
-    const letter = letters[Math.floor(Math.random() * letters.length)];
-    return {
-      type: 'ending-letter',
-      prompt: `Words ending with "${letter}"`,
-      validate: (w) => w.length >= 2 && w[w.length - 1].toUpperCase() === letter,
-      hints: [],
-    };
-  }
 }
 
 export default function WordChain({ difficulty, onComplete }: Props) {
@@ -114,8 +58,8 @@ export default function WordChain({ difficulty, onComplete }: Props) {
     }
 
     if (!challenge.validate(word)) {
-      setInvalid('Does not match the rule!');
-      setTimeout(() => setInvalid(null), 1000);
+      setInvalid(challenge.matchesRule(word) ? 'Not in the word list!' : 'Does not match the rule!');
+      setTimeout(() => setInvalid(null), 1200);
       setInput('');
       return;
     }

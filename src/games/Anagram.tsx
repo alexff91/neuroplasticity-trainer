@@ -1,17 +1,10 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { WORDS_BY_LEN, wordLengthForDifficulty } from './anagramWords';
 
 interface Props {
   difficulty: number;
   onComplete: (score: number, accuracy: number, responseTimeMs: number) => void;
 }
-
-const WORDS_BY_LEN: Record<number, string[]> = {
-  4: ['CALM', 'BRAIN', 'PLAY', 'WIND', 'HOPE', 'TREE', 'SAND', 'FIRE', 'COLD', 'WARM', 'BLUE', 'STAR', 'MOON', 'BOOK', 'GOLD', 'IRON', 'BIRD', 'SHIP', 'KING', 'WAVE'],
-  5: ['BRAIN', 'LIGHT', 'PLANT', 'OCEAN', 'STORM', 'NORTH', 'CLOUD', 'PEACE', 'POWER', 'STONE', 'TIGER', 'EAGLE', 'PIANO', 'RIVER', 'CRAFT', 'MUSIC', 'HEART', 'BLOOM', 'FLAME', 'SOLAR'],
-  6: ['MEMORY', 'BRIGHT', 'CIRCLE', 'PLANET', 'WONDER', 'FOREST', 'GARDEN', 'SILVER', 'ORANGE', 'PURPLE', 'WINTER', 'SUMMER', 'CASTLE', 'GUITAR', 'DESERT', 'JUNGLE', 'POETRY', 'GALAXY', 'MARBLE', 'MOMENT'],
-  7: ['NEURONS', 'JOURNEY', 'CRYSTAL', 'HARMONY', 'ANCIENT', 'COMPLEX', 'PASSION', 'MYSTERY', 'BALANCE', 'DIAMOND', 'CONCERT', 'FREEDOM', 'SCIENCE', 'PROJECT', 'CAPTURE', 'AMAZING', 'HORIZON', 'SUNRISE', 'CRIMSON', 'OUTLINE'],
-  8: ['CONSCIOUS', 'MOUNTAIN', 'INFINITE', 'PARADISE', 'UNIVERSE', 'CREATIVE', 'ELEPHANT', 'EVERGREEN', 'FRAGMENT', 'PATIENCE', 'STRENGTH', 'TRIUMPH', 'WHISPER', 'DAYLIGHT'],
-};
 
 function scramble(word: string): string {
   const letters = word.split('');
@@ -28,8 +21,7 @@ function scramble(word: string): string {
 }
 
 export default function Anagram({ difficulty, onComplete }: Props) {
-  // Word length scales 4 → 7 with difficulty
-  const wordLen = Math.min(4 + Math.floor(difficulty / 2), 7);
+  const wordLen = wordLengthForDifficulty(difficulty);
   const totalTrials = Math.min(5 + Math.floor(difficulty / 2), 8);
   const trialTime = Math.max(15000, 30000 - difficulty * 1500);
 

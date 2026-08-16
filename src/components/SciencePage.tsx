@@ -5,17 +5,17 @@ const CORE_PRINCIPLES = [
   {
     title: 'Neuroplasticity',
     description: 'The brain physically restructures itself in response to experience. Every time you learn something new or practice a skill, neurons form new connections (synaptogenesis) and strengthen existing ones (long-term potentiation). This process continues throughout life, not just in childhood.',
-    ref: 'Draganski, B., et al. (2004). Neuroplasticity: Changes in grey matter induced by training. Nature, 427, 311-312.',
+    ref: 'Draganski, B., et al. (2004). Changes in grey matter induced by training. Nature, 427(6972), 311-312.',
   },
   {
     title: 'Spaced Repetition',
     description: 'Distributing practice over time produces stronger, more durable memories than massed practice ("cramming"). The spacing effect works because each retrieval event strengthens the memory trace and slows forgetting. This app schedules exercise variety to leverage spacing.',
-    ref: 'Cepeda, N.J., et al. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. Psychological Bulletin, 132(3), 354.',
+    ref: 'Cepeda, N.J., et al. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. Psychological Bulletin, 132(3), 354-380.',
   },
   {
     title: 'Desirable Difficulty',
     description: 'Training is most effective when the challenge is just beyond your current ability. The adaptive difficulty system targets this "sweet spot" using an ELO-like algorithm. Too easy means no growth; too hard means frustration and disengagement.',
-    ref: 'Bjork, R.A. (1994). Memory and metamemory considerations in the training of human beings. In J. Metcalfe & A. Shimamura (Eds.), Metacognition. MIT Press.',
+    ref: 'Bjork, R.A. (1994). Memory and metamemory considerations in the training of human beings. In J. Metcalfe & A.P. Shimamura (Eds.), Metacognition: Knowing about knowing (pp. 185-205). Cambridge, MA: MIT Press.',
   },
   {
     title: 'Interleaving',
