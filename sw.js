@@ -1,7 +1,13 @@
-const CACHE_NAME = 'neuroforge-v1';
+// Bumped so the shell cached by the previous version is dropped on activate.
+// The fetch handler answers from cache first, so without a new name a returning
+// visitor would keep getting the old index.html for one more visit.
+const CACHE_NAME = 'neuroforge-v2';
+// Relative to the worker's own location: the same file is served from
+// /neuroplasticity-trainer/ on Pages and from / on neuro.alftech.space, and the
+// hardcoded Pages paths cached the wrong thing on the second of those.
 const ASSETS = [
-  '/neuroplasticity-trainer/',
-  '/neuroplasticity-trainer/index.html',
+  './',
+  './index.html',
 ];
 
 self.addEventListener('install', (event) => {

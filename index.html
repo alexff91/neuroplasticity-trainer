@@ -6,15 +6,115 @@
          root-absolute paths would 404 on GitHub Pages. -->
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Science-backed cognitive training platform leveraging neuroplasticity research with spaced repetition, interleaving, and personalized difficulty curves." />
+    <title>NeuroForge — twelve attention and memory exercises that scale to you</title>
+    <meta name="description" content="Twelve short exercises for attention, working memory, speed and verbal fluency — N-back, the Schulte table, the Stroop test and nine more. Difficulty follows a per-exercise rating, and everything is stored in your browser." />
+    <link rel="canonical" href="https://neuro.alftech.space/" />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#6366f1" />
     <link rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
-    <title>NeuroForge - Adaptive Brain Training</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="alftech" />
+    <meta property="og:title" content="NeuroForge — twelve attention and memory exercises that scale to you" />
+    <meta property="og:description" content="N-back, Schulte tables, the Stroop test and nine more. Each exercise carries its own rating, so the difficulty follows what you can already do. Three-minute daily warm-up. No account." />
+    <meta property="og:url" content="https://neuro.alftech.space/" />
+    <meta property="og:image" content="https://neuro.alftech.space/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="NeuroForge: the training screen with the daily warm-up and the session counters." />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NeuroForge — twelve attention and memory exercises that scale to you" />
+    <meta name="twitter:description" content="Twelve exercises, difficulty that follows your results, a three-minute daily warm-up. Runs in the browser, no account." />
+    <meta name="twitter:image" content="https://neuro.alftech.space/og.png" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "NeuroForge",
+      "url": "https://neuro.alftech.space/",
+      "description": "Twelve short exercises for attention, working memory, processing speed, spatial reasoning and verbal fluency, among them N-back, the Schulte table and the Stroop test. Each exercise keeps its own rating, so difficulty follows the last few rounds. Results are kept in the browser; there is no account and no server.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires JavaScript",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+    }
+    </script>
+
+    <!-- The app is a client-side bundle, so the raw HTML a crawler or a chat
+         link preview receives used to be an empty <div>. This block is the page
+         until the bundle boots: real, visible content, not hidden keywords.
+         React clears the container on its first render and replaces it. Styles
+         are inline because the app's stylesheet is built from the classes found
+         in src, and this markup has to stand up before any of it applies. -->
+    <style>
+      .pre {
+        background: #0f172a;
+        color: #cbd5e1;
+        min-height: 100vh;
+        font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .pre .inner { max-width: 900px; margin: 0 auto; padding: 24px 16px 56px; }
+      .pre h1 { font-size: 26px; line-height: 1.2; font-weight: 700; color: #fff; margin: 0 0 6px; }
+      .pre h1 .mark { color: #818cf8; }
+      .pre .tagline { color: #64748b; font-size: 14px; margin: 0 0 28px; }
+      .pre h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; font-weight: 600; margin: 32px 0 12px; }
+      .pre p { margin: 0 0 16px; max-width: 68ch; }
+      .pre ul { margin: 0 0 16px; padding-left: 20px; }
+      .pre li { margin-bottom: 8px; }
+      .pre .ex { list-style: none; padding: 0; }
+      .pre .ex li { margin-bottom: 12px; }
+      .pre .ex b { color: #e2e8f0; font-weight: 600; }
+      .pre .caveat {
+        border-left: 3px solid #f59e0b; background: #1e293b;
+        padding: 14px 16px; border-radius: 0 8px 8px 0; margin: 0 0 16px;
+      }
+      .pre .caveat p { margin: 0; font-size: 15px; }
+      .pre .note { color: #94a3b8; font-size: 14px; }
+      @media (min-width: 640px) {
+        .pre h1 { font-size: 32px; }
+        .pre .inner { padding: 40px 24px 72px; }
+      }
+    </style>
     <script type="module" crossorigin src="/neuroplasticity-trainer/assets/index-DAbroFmW.js"></script>
     <link rel="stylesheet" crossorigin href="/neuroplasticity-trainer/assets/index-CMMXUThw.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="pre"><div class="inner">
+      <h1><span class="mark">&#9678;</span> NeuroForge</h1>
+      <p class="tagline">Twelve attention and memory exercises, adapted to you</p>
+
+      <p>Twelve short exercises for attention, working memory, processing speed, spatial reasoning and verbal fluency — among them N-back, the Schulte table and the Stroop test. Each exercise keeps its own rating for you: a good round pushes the difficulty up, a bad one eases it off, so the task stays a little past what you can already do rather than boring or defeating you.</p>
+
+      <p>A session does not simply repeat what you just did. Exercises you have not touched for a while come first, along with the ones where your recent accuracy sits in the 60–80% band, and the selection is shuffled rather than grouped by type. There is also a three-minute Daily Warm-Up: one round of all twelve, each scaled to your current level.</p>
+
+      <h2>The twelve exercises</h2>
+      <ul class="ex">
+        <li><b>N-Back Challenge</b> — track whether the current item matches the one N steps back.</li>
+        <li><b>Sequence Recall</b> — memorise and reproduce sequences that keep getting longer.</li>
+        <li><b>Schulte Table</b> — find the numbers in order across a shuffled grid.</li>
+        <li><b>Stroop Challenge</b> — name the colour of the text while ignoring the word it spells.</li>
+        <li><b>Go / No-Go</b> — respond to the target and hold back on the distractor.</li>
+        <li><b>Pattern Matrix</b> — work out the missing piece of a visual pattern.</li>
+        <li><b>Mental Rotation</b> — decide whether two rotated shapes are the same or mirrored.</li>
+        <li><b>Speed Match</b> — say quickly whether two items match.</li>
+        <li><b>Reaction Tap</b> — tap as fast as you can when the target appears; later levels add trials you must not tap.</li>
+        <li><b>Math Sprint</b> — mental arithmetic against the clock.</li>
+        <li><b>Word Chain</b> — produce words that fit a rule, under time pressure.</li>
+        <li><b>Anagram Solver</b> — unscramble the letters into a word.</li>
+      </ul>
+
+      <h2>What it does not claim</h2>
+      <div class="caveat">
+        <p>This is an educational tool, not a medical device. The exercises are drawn from published work — the Science page names a source for each — but cognitive training has not been shown to prevent or treat neurological conditions, and the brain-training industry has taken fair scientific criticism for suggesting otherwise. For medical concerns, talk to a healthcare professional.</p>
+      </div>
+
+      <p class="note">Your results live in your browser and nowhere else: no account, no sign-up, no server holding your history. Clearing the site's data clears your progress with it.</p>
+    </div></div></div>
   </body>
 </html>
