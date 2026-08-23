@@ -105,7 +105,7 @@ export default function SciencePage() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                 <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{ex.name}</h3>
                 <span style={{
-                  fontSize: '0.7rem',
+                  fontSize: '0.75rem',
                   padding: '0.15rem 0.5rem',
                   borderRadius: '10px',
                   background: color + '20',

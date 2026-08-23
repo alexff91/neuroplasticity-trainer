@@ -97,11 +97,18 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
       }}>
         <button
           onClick={onSessionEnd}
+          aria-label="Leave the session"
           style={{
             background: 'none',
             color: 'var(--text-muted)',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
+            /* The arrow itself is 20px; the button around it has to stay
+               thumb-sized, and it sits at the very left edge on a phone. */
+            minWidth: '44px',
+            minHeight: '44px',
+            marginLeft: '-0.6rem',
           }}
         >
           <ArrowLeft size={20} />
@@ -276,7 +283,7 @@ export default function SessionRunner({ exerciseIds, profile, sessionId, onExerc
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.65rem',
+                    fontSize: '0.75rem',
                     fontWeight: 700,
                     color: c,
                   }}>

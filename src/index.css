@@ -104,6 +104,6 @@ a:hover {
 .animate-slide-in { animation: slideIn 0.3s ease-out; }
 .animate-count-up { animation: countUp 0.5s ease-out; }
 
-@media (max-width: 768px) {
-  html { font-size: 14px; }
-}
+/* The root font size stays 16px on a phone. Shrinking it here scaled every
+   rem-sized label down with it: 0.75rem labels rendered at 10.5px and badges
+   at 9.8px, well under the 12px floor. */

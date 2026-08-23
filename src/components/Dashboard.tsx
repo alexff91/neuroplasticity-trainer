@@ -172,7 +172,7 @@ export default function Dashboard({ profile }: Props) {
           }}>
             <div style={{ color: stat.color, marginBottom: '0.25rem' }}>{stat.icon}</div>
             <div style={{ fontSize: '1.4rem', fontWeight: 700 }}>{stat.value}</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{stat.label}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{stat.label}</div>
           </div>
         ))}
       </div>
@@ -284,7 +284,7 @@ export default function Dashboard({ profile }: Props) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center', marginTop: '0.5rem' }}>
             {Object.entries(skillTrends).map(([, data]) => (
               <span key={data.label} style={{
-                fontSize: '0.7rem',
+                fontSize: '0.75rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.25rem',

@@ -116,7 +116,7 @@ export default function GlobalView({ profile }: Props) {
             <strong>{settings.enabled ? 'Connected' : 'Offline mode'}</strong>
             {settings.enabled && (
               <span style={{
-                fontSize: '0.7rem',
+                fontSize: '0.75rem',
                 padding: '0.15rem 0.5rem',
                 borderRadius: '10px',
                 background: 'var(--accent-info)20',
@@ -143,6 +143,7 @@ export default function GlobalView({ profile }: Props) {
                 disabled={syncing || profile.totalExercises === 0}
                 style={{
                   padding: '0.5rem 1rem',
+                  minHeight: '44px',
                   borderRadius: 'var(--radius-sm)',
                   background: 'var(--bg-card)',
                   color: 'var(--text-primary)',
@@ -157,6 +158,7 @@ export default function GlobalView({ profile }: Props) {
                 onClick={() => updateSettings({ handle: generateHandle() })}
                 style={{
                   padding: '0.5rem 1rem',
+                  minHeight: '44px',
                   borderRadius: 'var(--radius-sm)',
                   background: 'var(--bg-card)',
                   color: 'var(--text-secondary)',
@@ -172,6 +174,7 @@ export default function GlobalView({ profile }: Props) {
             onClick={handleToggle}
             style={{
               padding: '0.5rem 1.1rem',
+              minHeight: '44px',
               borderRadius: 'var(--radius-sm)',
               background: settings.enabled ? 'var(--accent-danger)' : 'var(--accent-info)',
               color: 'white',
@@ -238,7 +241,7 @@ export default function GlobalView({ profile }: Props) {
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{s.label}</div>
             {s.placeholder && !loading && (
-              <div style={{ fontSize: '0.65rem', color: 'var(--accent-warning)', marginTop: '0.2rem', fontWeight: 600 }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--accent-warning)', marginTop: '0.2rem', fontWeight: 600 }}>
                 no data yet
               </div>
             )}
@@ -301,7 +304,7 @@ export default function GlobalView({ profile }: Props) {
                       transition: 'width 0.5s',
                     }} />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                     <span>You: <strong style={{ color }}>{c.user}</strong></span>
                     <span>{illustrative ? 'Reference' : 'Global'}: <strong>{Math.round(c.global * (max / 100)) / (max / 100)}</strong></span>
                   </div>
@@ -347,7 +350,7 @@ export default function GlobalView({ profile }: Props) {
                       {entry.handle}{isMe ? ' (you)' : ''}
                     </span>
                     {entry.region && (
-                      <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>· {entry.region}</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>· {entry.region}</span>
                     )}
                   </div>
                   <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>

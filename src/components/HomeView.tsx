@@ -181,6 +181,7 @@ export default function HomeView({ profile, onStartSession, onStartExercise, onS
             onClick={onStartWarmup}
             style={{
               padding: '0.75rem 1.75rem',
+              minHeight: '44px',
               borderRadius: 'var(--radius)',
               background: warmupDoneToday ? 'var(--bg-card)' : 'var(--accent-warning)',
               color: warmupDoneToday ? 'var(--text-secondary)' : '#1a1a1a',
@@ -325,7 +326,7 @@ export default function HomeView({ profile, onStartSession, onStartExercise, onS
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.95rem' }}>{ex.name}</div>
                   <span style={{
-                    fontSize: '0.7rem',
+                    fontSize: '0.75rem',
                     padding: '0.15rem 0.4rem',
                     borderRadius: '10px',
                     background: color + '20',
