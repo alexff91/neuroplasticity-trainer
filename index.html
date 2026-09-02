@@ -80,6 +80,24 @@
         .pre h1 { font-size: 32px; }
         .pre .inner { padding: 40px 24px 72px; }
       }
+
+      /* A quiet block under everything: what stays in the browser, what could be
+         wrong with the exercises, and where to write. It sits outside #root,
+         because React empties that container on its first render and anything
+         inside it goes with the placeholder above. */
+      .sf { background: #0f172a; border-top: 1px solid #1e293b; color: #64748b;
+        font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .sf-wrap { max-width: 900px; margin: 0 auto; padding: 14px 16px 18px; }
+      .sf p { margin: 0; }
+      /* The addresses get a row to themselves. A link is a tap target like any
+         other, so each one is a 44px-tall box; sitting mid-sentence those boxes
+         push the prose lines apart and the paragraph reads ragged. On their own
+         row every line is 44px anyway and nothing looks out of place. */
+      .sf-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; }
+      .sf a { color: #94a3b8; display: inline-flex; align-items: center; min-height: 44px;
+        text-decoration: underline; text-decoration-color: #334155; text-underline-offset: 3px; }
+      .sf a:hover { color: #818cf8; text-decoration-color: #818cf8; }
+      @media (min-width: 640px) { .sf-wrap { padding: 16px 24px 22px; } }
     </style>
     <script type="module" crossorigin src="/neuroplasticity-trainer/assets/index-DAbroFmW.js"></script>
     <link rel="stylesheet" crossorigin href="/neuroplasticity-trainer/assets/index-CMMXUThw.css">
@@ -116,5 +134,45 @@
 
       <p class="note">Your results live in your browser and nowhere else: no account, no sign-up, no server holding your history. Clearing the site's data clears your progress with it.</p>
     </div></div></div>
+
+    <!-- Outside #root on purpose: the block above is a placeholder React throws
+         away, and this line has to survive that. The @ is written as a numeric
+         entity — the browser resolves it before it builds the link, so the
+         mailto works and the text copies normally, while the plain name@host
+         pattern a harvester greps the raw HTML for is not sitting there to be
+         found. -->
+    <footer class="sf">
+      <div class="sf-wrap">
+        <p>
+          All twelve exercises run in this browser and your results stay in it —
+          no account, no server keeping a history of how you did. If an exercise
+          scores a round wrongly, if the difficulty jumps somewhere it plainly
+          should not, or if the Science page credits a source that does not say
+          what it is cited for, write to me: a wrong score here is worse than no
+          score, because the rating is built out of them.
+        </p>
+        <p class="sf-row">
+          <a href="mailto:a&#64;alftech.space?subject=NeuroForge">a&#64;alftech.space</a>
+          <span>·</span>
+          <a href="https://alftech.space/">alftech.space</a><span class="sf-tip"></span>
+        </p>
+      </div>
+        <p>New tools and what changed in them: <a href="https://t.me/alftechnologies" target="_blank" rel="noopener">@alftechnologies</a>.</p>
+  </footer>
+    <script>
+      /* Donations. There is no account to send anything to yet, so this is empty
+         and the line renders nothing — better than a link that goes nowhere.
+         Putting the donation page's URL in this one string is the single edit
+         that switches the line on. */
+      var SF_TIP_URL = '';
+      if (SF_TIP_URL) {
+        var sfLink = document.createElement('a');
+        sfLink.href = SF_TIP_URL;
+        sfLink.rel = 'noopener';
+        sfLink.textContent = 'buy me a coffee';
+        document.querySelector('.sf-tip').append(' · ', sfLink);
+      }
+    </script>
+
   </body>
 </html>
