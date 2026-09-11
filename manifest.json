@@ -1,7 +1,7 @@
 {
   "name": "NeuroForge - Adaptive Brain Training",
   "short_name": "NeuroForge",
-  "description": "Science-backed cognitive training leveraging neuroplasticity research",
+  "description": "Twelve attention and memory exercises, difficulty follows your results",
   "start_url": "/neuroplasticity-trainer/",
   "display": "standalone",
   "background_color": "#0f172a",
