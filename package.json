@@ -2,7 +2,7 @@
   "name": "neuroplasticity-trainer",
   "private": false,
   "version": "1.0.0",
-  "description": "Science-backed adaptive cognitive training platform leveraging neuroplasticity research",
+  "description": "Twelve attention and memory exercises in the browser, with difficulty that follows your results",
   "author": "Aleksandr Fedorov",
   "license": "MIT",
   "type": "module",

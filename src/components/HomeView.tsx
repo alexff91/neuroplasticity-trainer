@@ -61,8 +61,8 @@ export default function HomeView({ profile, onStartSession, onStartExercise, onS
           Train Your Brain
         </h1>
         <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto' }}>
-          Science-backed cognitive exercises that adapt to your performance.
-          Build neural pathways through deliberate practice.
+          N-back, Schulte tables, Stroop and nine more, in your browser.
+          The difficulty follows how you did last time.
         </p>
       </div>
 
